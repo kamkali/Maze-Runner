@@ -1,12 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class MazeGenerator implements Maze {
 
     private Cell[][] arr2D;
-
     private Cell currentCell;
+    int[][] arr = new int[10][10];
+
 
     @Override
     public void generate(int rows, int cols) {
@@ -19,46 +18,54 @@ public class MazeGenerator implements Maze {
         }
         currentCell = arr2D[0][0];
         currentCell.setVisited(true);
+
+        findCell(currentCell);
     }
 
-    public boolean checkIndex(int row, int col){
-        return !(row < 0 || row > this.arr2D.length || col < 0 || col > this.arr2D[0].length);
-    }
-
-    public Cell checkNeighbors(Cell[][] grid, int row, int col){
-        List<Cell> unvisitedNeighbors = new ArrayList<>();
-        Cell top;
-        Cell right;
-        Cell bottom;
-        Cell left;
-
-
-        if (checkIndex(row - 1, col) || !grid[row - 1][col].isVisited()) {
-            top = grid[row - 1][col];
-            unvisitedNeighbors.add(top);
-        }
-        if (checkIndex(row, col + 1) || !grid[row][col + 1].isVisited()) {
-            right = grid[row][col + 1];
-            unvisitedNeighbors.add(right);
-        }
-        if (checkIndex(row + 1, col) || !grid[row + 1][col].isVisited()) {
-            bottom = grid[row + 1][col];
-            unvisitedNeighbors.add(bottom);
-        }
-        if (checkIndex(row, col - 1) || !grid[row][col - 1].isVisited()) {
-            left = grid[row][col - 1];
-            unvisitedNeighbors.add(left);
-        }
-
-        if (!unvisitedNeighbors.isEmpty()){
-            int randomNum = ThreadLocalRandom.current().nextInt(0, unvisitedNeighbors.size() + 1);
-            return unvisitedNeighbors.get(randomNum);
-        } else {
+    public Cell findCell(Cell currentCell){
+        Cell nextCell = currentCell.checkNeighbors(arr2D, currentCell.getRow(), currentCell.getCol());
+        if (nextCell != null){
+            nextCell.setVisited(true);
+            drawPath(nextCell.getRow(), nextCell.getCol());
+            currentCell = nextCell;
+            return findCell(currentCell);
+        } else
             return null;
+    }
+
+    public void drawPath(int row,int col){
+        arr[0][0] = 1;
+        arr[row][col] = 1;
+        for (int i = 0; i < arr.length; i++){
+            for (int j = 0 ; j < arr[0].length; j++){
+                if (arr[i][j] == 1)
+                    System.out.print("* ");
+                else
+                    System.out.print(arr[i][j] + " ");
+            }
+            System.out.println();
+        }
+//        System.out.print("*");
+        System.out.println();
+        System.out.println();
+    }
+
+
+    @Override
+    public void draw() throws InterruptedException {
+        for (Cell[] vec : this.arr2D){
+            for(Cell el : vec){
+                if (el.isVisited()) {
+                    System.out.print("*");
+                }
+                System.out.print("(" + el.getRow() + "," + el.getCol() + ") ");
+//                TimeUnit.SECONDS.sleep(1);
+            }
+            System.out.println();
         }
     }
 
-//    @Override
+    //    @Override
 //    public void draw() {
 //        for (Cell[] vector : this.arr2D){
 //            for (Cell el : vector){
@@ -72,16 +79,4 @@ public class MazeGenerator implements Maze {
 //    }
 
 
-    @Override
-    public void draw() {
-        for (Cell[] vec : this.arr2D){
-            for(Cell el : vec){
-                if (el.isVisited()) {
-                    System.out.print("*");
-                }
-                System.out.print("(" + el.getRow() + "," + el.getCol() + ") ");
-            }
-            System.out.println();
-        }
-    }
 }

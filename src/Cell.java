@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Cell {
     private int row;
     private int col;
@@ -34,5 +38,50 @@ public class Cell {
 
     public int getCol() {
         return col;
+    }
+
+    public boolean checkIndex(Cell[][] grid ,int row, int col){
+        return !(row < 0 || row > grid.length - 1 || col < 0 || col > grid[0].length - 1);
+    }
+
+    public Cell checkNeighbors(Cell[][] grid, int row, int col){
+        List<Cell> unvisitedNeighbors = new ArrayList<>();
+        Cell top;
+        Cell right;
+        Cell bottom;
+        Cell left;
+
+
+        if (checkIndex(grid, row - 1, col)) {
+            if (!grid[row - 1][col].isVisited()) {
+                top = grid[row - 1][col];
+                unvisitedNeighbors.add(top);
+            }
+        }
+        if (checkIndex(grid, row, col + 1)) {
+            if (!grid[row][col + 1].isVisited()) {
+                right = grid[row][col + 1];
+                unvisitedNeighbors.add(right);
+            }
+        }
+        if (checkIndex(grid, row + 1, col)) {
+            if (!grid[row + 1][col].isVisited()) {
+                bottom = grid[row + 1][col];
+                unvisitedNeighbors.add(bottom);
+            }
+        }
+        if (checkIndex(grid, row, col - 1)) {
+            if (!grid[row][col - 1].isVisited()) {
+                left = grid[row][col - 1];
+                unvisitedNeighbors.add(left);
+            }
+        }
+
+        if (!unvisitedNeighbors.isEmpty()){
+            int randomNum = ThreadLocalRandom.current().nextInt(0, unvisitedNeighbors.size());
+            return unvisitedNeighbors.get(randomNum);
+        } else {
+            return null;
+        }
     }
 }
