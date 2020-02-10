@@ -1,17 +1,15 @@
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
 
 public class MazeGenerator implements Maze {
 
     private Cell[][] arr2D;
     private Cell currentCell;
     private final int rows, cols;
-    private int[][] arr = new int[10][10];
     private Stack<Cell> cellStack = new Stack<>();
 
-    public MazeGenerator(int rows, int cols) {
-        this.cols = cols;
-        this.rows = rows;
+    public MazeGenerator(int dim) {
+        this.cols = dim;
+        this.rows = dim;
         this.generate();
     }
 
@@ -24,6 +22,7 @@ public class MazeGenerator implements Maze {
             }
         }
         this.currentCell = arr2D[0][0];
+        this.currentCell.walls[Cell.Wall.TOP.getWall()] = false;
         this.currentCell.setVisited(true);
 
         findCell(this.currentCell);
@@ -31,16 +30,16 @@ public class MazeGenerator implements Maze {
 
     private Cell findCell(Cell currentCell){
         Cell nextCell = currentCell.checkNeighbors(arr2D, currentCell.getRow(), currentCell.getCol());
+
         if (nextCell != null){
             nextCell.setVisited(true);
             cellStack.push(currentCell);
-            
-//            drawPath(nextCell.getRow(), nextCell.getCol());
-            
+
             removeWalls(currentCell, nextCell);
             
             currentCell = nextCell;
             return findCell(currentCell);
+
         } else if (!cellStack.empty()) {
             currentCell = cellStack.pop();
             return findCell(currentCell);
@@ -51,50 +50,34 @@ public class MazeGenerator implements Maze {
     private void removeWalls(Cell currentCell, Cell nextCell) {
         int x = currentCell.getRow() - nextCell.getRow();
         if (x == 1){
-            currentCell.walls[3] = false;
-            nextCell.walls[1] = false;
+            currentCell.walls[Cell.Wall.LEFT.getWall()] = false;
+            nextCell.walls[Cell.Wall.RIGHT.getWall()] = false;
         } else if (x == -1){
-            currentCell.walls[1] = false;
-            nextCell.walls[3] = false;
+            currentCell.walls[Cell.Wall.RIGHT.getWall()] = false;
+            nextCell.walls[Cell.Wall.LEFT.getWall()] = false;
         }
         int y = currentCell.getCol() - nextCell.getCol();
         if (y == 1){
-            currentCell.walls[0] = false;
-            nextCell.walls[2] = false;
+            currentCell.walls[Cell.Wall.TOP.getWall()] = false;
+            nextCell.walls[Cell.Wall.BOTTOM.getWall()] = false;
         } else if (y == -1){
-            currentCell.walls[2] = false;
-            nextCell.walls[0] = false;
+            currentCell.walls[Cell.Wall.BOTTOM.getWall()] = false;
+            nextCell.walls[Cell.Wall.TOP.getWall()] = false;
         }
-
     }
 
-    private void drawPath(int row,int col){
-        arr[0][0] = 1;
-        arr[row][col] = 1;
-        for (int i = 0; i < arr.length; i++){
-            for (int j = 0 ; j < arr[0].length; j++){
-                if (arr[i][j] == 1)
-                    System.out.print("* ");
-                else
-                    System.out.print(arr[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-    }
 
     @Override
     public void display() {
         for (int i = 0; i < this.rows; i++) {
             // draw the top edge
             for (int j = 0; j < this.rows; j++) {
-                System.out.print((arr2D[j][i].walls[0]) ? "+---" : "+   ");
+                System.out.print((arr2D[j][i].walls[Cell.Wall.TOP.getWall()]) ? "+---" : "+   ");
             }
             System.out.println("+");
             // draw the left edge
             for (int j = 0; j < this.rows; j++) {
-                System.out.print((arr2D[j][i].walls[3]) ? "|   " : "    ");
+                System.out.print((arr2D[j][i].walls[Cell.Wall.LEFT.getWall()]) ? "|   " : "    ");
             }
             System.out.println("|");
         }
@@ -103,20 +86,5 @@ public class MazeGenerator implements Maze {
             System.out.print("+---");
         }
         System.out.println("+");
-    }
-
-
-    @Override
-    public void draw() throws InterruptedException {
-        for (Cell[] vec : this.arr2D){
-            for(Cell el : vec){
-                if (el.isVisited()) {
-                    System.out.print("*");
-                }
-                System.out.print("(" + el.getRow() + "," + el.getCol() + ") ");
-//                TimeUnit.SECONDS.sleep(1);
-            }
-            System.out.println();
-        }
     }
 }

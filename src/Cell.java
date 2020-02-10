@@ -24,6 +24,22 @@ public class Cell {
         this.visited = false;
     }
 
+    public enum Wall{
+        TOP(0),
+        RIGHT(1),
+        BOTTOM(2),
+        LEFT(3);
+
+        private final int wall;
+        Wall(int wall) {
+            this.wall = wall;
+        }
+
+        public int getWall() {
+            return wall;
+        }
+    }
+
     public boolean isVisited() {
         return visited;
     }
