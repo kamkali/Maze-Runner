@@ -34,7 +34,11 @@ public class MazeGenerator implements Maze {
         if (nextCell != null){
             nextCell.setVisited(true);
             cellStack.push(currentCell);
-            drawPath(nextCell.getRow(), nextCell.getCol());
+            
+//            drawPath(nextCell.getRow(), nextCell.getCol());
+            
+            removeWalls(currentCell, nextCell);
+            
             currentCell = nextCell;
             return findCell(currentCell);
         } else if (!cellStack.empty()) {
@@ -42,6 +46,26 @@ public class MazeGenerator implements Maze {
             return findCell(currentCell);
         }
         return null;
+    }
+
+    private void removeWalls(Cell currentCell, Cell nextCell) {
+        int x = currentCell.getRow() - nextCell.getRow();
+        if (x == 1){
+            currentCell.walls[3] = false;
+            nextCell.walls[1] = false;
+        } else if (x == -1){
+            currentCell.walls[1] = false;
+            nextCell.walls[3] = false;
+        }
+        int y = currentCell.getCol() - nextCell.getCol();
+        if (y == 1){
+            currentCell.walls[0] = false;
+            nextCell.walls[2] = false;
+        } else if (y == -1){
+            currentCell.walls[2] = false;
+            nextCell.walls[0] = false;
+        }
+
     }
 
     private void drawPath(int row,int col){
@@ -56,7 +80,6 @@ public class MazeGenerator implements Maze {
             }
             System.out.println();
         }
-//        System.out.print("*");
         System.out.println();
         System.out.println();
     }
@@ -96,19 +119,4 @@ public class MazeGenerator implements Maze {
             System.out.println();
         }
     }
-
-    //    @Override
-//    public void draw() {
-//        for (Cell[] vector : this.arr2D){
-//            for (Cell el : vector){
-//                if (el == 1)
-//                    System.out.print("\u2588\u2588");
-//                else
-//                    System.out.print("  ");
-//            }
-//            System.out.println();
-//        }
-//    }
-
-
 }
