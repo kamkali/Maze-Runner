@@ -3,6 +3,6 @@
 public interface Maze {
     void draw() throws InterruptedException;
 
-    void generate(int rows, int cols);
+    void display();
 
 }

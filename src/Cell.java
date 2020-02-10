@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Cell {
     private int row;
     private int col;
-    private boolean[] walls;
+    public boolean[] walls;
     private boolean visited;
 
     public Cell(int row, int col) {
