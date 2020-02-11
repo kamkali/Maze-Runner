@@ -1,11 +1,12 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class MazeGenerator implements Maze {
 
     private Cell[][] arr2D;
-    private Cell currentCell;
-    private final int rows, cols;
-    private Stack<Cell> cellStack = new Stack<>();
+    private final int rows;
+    private final int cols;
+    private Deque<Cell> cellStack = new ArrayDeque<>();
 
     public MazeGenerator(int dim) {
         this.cols = dim;
@@ -21,11 +22,11 @@ public class MazeGenerator implements Maze {
                 arr2D[i][j] = new Cell(i, j);
             }
         }
-        this.currentCell = arr2D[0][0];
-        this.currentCell.walls[Cell.Wall.TOP.getWall()] = false;
-        this.currentCell.setVisited(true);
+        Cell currentCell = arr2D[0][0];
+        currentCell.walls[Cell.Wall.TOP.getWall()] = false;
+        currentCell.setVisited(true);
 
-        findCell(this.currentCell);
+        findCell(currentCell);
     }
 
     private Cell findCell(Cell currentCell){
@@ -40,7 +41,7 @@ public class MazeGenerator implements Maze {
             currentCell = nextCell;
             return findCell(currentCell);
 
-        } else if (!cellStack.empty()) {
+        } else if (!cellStack.isEmpty()) {
             currentCell = cellStack.pop();
             return findCell(currentCell);
         }
@@ -82,9 +83,10 @@ public class MazeGenerator implements Maze {
             System.out.println("|");
         }
         // draw the bottom line
-        for (int j = 0; j < this.rows; j++) {
+        for (int j = 0; j < this.rows - 1; j++) {
             System.out.print("+---");
         }
+        System.out.print("+   ");
         System.out.println("+");
     }
 }
