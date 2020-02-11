@@ -4,9 +4,8 @@ public class MazeSolver{
     private Cell[][] mazeGrid;
 
     // step 0
-    Set<Cell> visitedNodes = new HashSet<>();
-    Set<Cell> unvisitedNodes = new HashSet<>();
-    Map<Cell, Double> nodesCost = new HashMap<>();
+    private Set<Cell> visitedNodes = new HashSet<>();
+    private Set<Cell> unvisitedNodes = new HashSet<>();
 
     public MazeSolver(Cell[][] mazeGrid) {
         this.mazeGrid = mazeGrid;
@@ -28,10 +27,17 @@ public class MazeSolver{
 
         // step 2
         Cell initialNode = mazeGrid[0][0];  // pick entry node
+        Cell exitNode = mazeGrid[mazeGrid.length - 1][mazeGrid[0].length - 1];
         initialNode.setPathValue(0);    // set its path value to zero
-
         checkNeighboringNodes(initialNode);
 
+
+        for (Cell node: unvisitedNodes) {
+            if (!visitedNodes.contains(node))
+                checkNeighboringNodes(node);
+            if (exitNode.isVisited())
+                break;
+        }
     }
 
     private void checkNeighboringNodes(Cell currentNode) {
@@ -52,7 +58,6 @@ public class MazeSolver{
             if (currentNodePathCost < currentNode.getPathValue())
                 currentNode.setPathValue(currentNodePathCost);
         }
-        unvisitedNodes.remove(currentNode);
         visitedNodes.add(currentNode);
     }
 }

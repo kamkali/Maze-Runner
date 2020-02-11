@@ -6,5 +6,6 @@ public class Main {
 
         MazeSolver mazeSolver = new MazeSolver(myMaze.getMazeGrid());
         mazeSolver.solveMaze();
+        System.out.println();
     }
 }
