@@ -3,10 +3,15 @@ import java.util.Deque;
 
 public class MazeGenerator implements Maze {
 
-    private Cell[][] arr2D;
+    private Cell[][] mazeGrid;
     private final int rows;
     private final int cols;
     private Deque<Cell> cellStack = new ArrayDeque<>();
+
+    @Override
+    public Cell[][] getMazeGrid() {
+        return mazeGrid;
+    }
 
     public MazeGenerator(int dim) {
         this.cols = dim;
@@ -15,14 +20,14 @@ public class MazeGenerator implements Maze {
     }
 
     private void generate() {
-        arr2D = new Cell[rows][cols];
+        mazeGrid = new Cell[rows][cols];
 
-        for (int i = 0; i < arr2D.length; i++) {
-            for (int j = 0; j < arr2D[i].length; j++) {
-                arr2D[i][j] = new Cell(i, j);
+        for (int i = 0; i < mazeGrid.length; i++) {
+            for (int j = 0; j < mazeGrid[i].length; j++) {
+                mazeGrid[i][j] = new Cell(i, j);
             }
         }
-        Cell currentCell = arr2D[0][0];
+        Cell currentCell = mazeGrid[0][0];
         currentCell.walls[Cell.Wall.TOP.getWall()] = false;
         currentCell.setVisited(true);
 
@@ -30,7 +35,7 @@ public class MazeGenerator implements Maze {
     }
 
     private Cell findCell(Cell currentCell){
-        Cell nextCell = currentCell.checkNeighbors(arr2D, currentCell.getRow(), currentCell.getCol());
+        Cell nextCell = currentCell.checkNeighbors(mazeGrid, currentCell.getRow(), currentCell.getCol());
 
         if (nextCell != null){
             nextCell.setVisited(true);
@@ -73,12 +78,12 @@ public class MazeGenerator implements Maze {
         for (int i = 0; i < this.rows; i++) {
             // draw the top edge
             for (int j = 0; j < this.rows; j++) {
-                System.out.print((arr2D[j][i].walls[Cell.Wall.TOP.getWall()]) ? "+---" : "+   ");
+                System.out.print((mazeGrid[j][i].walls[Cell.Wall.TOP.getWall()]) ? "+---" : "+   ");
             }
             System.out.println("+");
             // draw the left edge
             for (int j = 0; j < this.rows; j++) {
-                System.out.print((arr2D[j][i].walls[Cell.Wall.LEFT.getWall()]) ? "|   " : "    ");
+                System.out.print((mazeGrid[j][i].walls[Cell.Wall.LEFT.getWall()]) ? "|   " : "    ");
             }
             System.out.println("|");
         }

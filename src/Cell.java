@@ -7,6 +7,15 @@ public class Cell {
     private int col;
     public boolean[] walls;
     private boolean visited;
+    private double pathValue;
+
+    public double getPathValue() {
+        return pathValue;
+    }
+
+    public void setPathValue(double pathValue) {
+        this.pathValue = pathValue;
+    }
 
     public Cell(int row, int col) {
         this.row = row;
@@ -56,7 +65,7 @@ public class Cell {
         return col;
     }
 
-    public boolean checkIndex(Cell[][] grid ,int row, int col){
+    public boolean checkIndex(Cell[][] grid, int row, int col) {
         return !(row < 0 || row > grid.length - 1 || col < 0 || col > grid[0].length - 1);
     }
 
