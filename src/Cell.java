@@ -115,6 +115,7 @@ public class Cell {
     public String toString() {
         return "{Cell(" + col + ","+ row +
                 "), walls=" + Arrays.toString(walls) +
+                " , cost=" + pathValue +
                 '}';
     }
 }

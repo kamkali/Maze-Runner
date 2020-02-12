@@ -7,11 +7,9 @@ public class MazeGenerator implements Maze {
     private final int rows;
     private final int cols;
     private Deque<Cell> cellStack = new ArrayDeque<>();
+    private Graph graph = new Graph();
+    private double nodePathCost = 0;
 
-    @Override
-    public Cell[][] getMazeGrid() {
-        return mazeGrid;
-    }
 
     public MazeGenerator(int dim) {
         this.cols = dim;
@@ -27,12 +25,19 @@ public class MazeGenerator implements Maze {
                 mazeGrid[i][j] = new Cell(i, j);
             }
         }
+
+        // initial cell
         Cell currentCell = mazeGrid[0][0];
+        graph.getVertices().add(currentCell);
+
+        // open an entry wall
         currentCell.walls[Cell.Wall.TOP.getWall()] = false;
         currentCell.setVisited(true);
+        currentCell.setPathValue(0);
 
         findCell(currentCell);
     }
+
 
     private Cell findCell(Cell currentCell){
         Cell nextCell = currentCell.checkNeighbors(mazeGrid, currentCell.getRow(), currentCell.getCol());
@@ -47,11 +52,13 @@ public class MazeGenerator implements Maze {
             return findCell(currentCell);
 
         } else if (!cellStack.isEmpty()) {
+//            graph.getVertices().add(currentCell);
             currentCell = cellStack.pop();
             return findCell(currentCell);
         }
         return null;
     }
+
 
     private void removeWalls(Cell currentCell, Cell nextCell) {
         int x = currentCell.getRow() - nextCell.getRow();
@@ -93,5 +100,11 @@ public class MazeGenerator implements Maze {
         }
         System.out.print("+   ");
         System.out.println("+");
+    }
+
+
+    @Override
+    public Cell[][] getMazeGrid() {
+        return mazeGrid;
     }
 }

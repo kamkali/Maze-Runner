@@ -2,6 +2,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Graph {
+    private Set<Cell> vertices = new HashSet<>();
+
+    public Set<Cell> getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(Set<Cell> vertices) {
+        this.vertices = vertices;
+    }
+
     public Set<Cell> findVertices(Maze maze){
         Set<Cell> unvisitedVertices = new HashSet<>();
         Cell[][] mazeGrid = maze.getMazeGrid();
@@ -22,6 +32,13 @@ public class Graph {
             }
         }
         return unvisitedVertices;
+    }
+
+    public void findDistance(Cell initialNode, Set<Cell> vertices){
+        for (Cell vert: vertices){
+            double cost = (vert.getRow() - initialNode.getRow()) + (vert.getCol() - initialNode.getCol());
+            vert.setPathValue(cost);
+        }
     }
 
     private int checkWalls(Cell cell) {
