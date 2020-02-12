@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -29,7 +30,7 @@ public class Cell {
                 bottom
          */
         // clock-wise order
-        this.walls = new boolean[]{true, true, true, true}; // means that at the beggining every 'wall' is set
+        this.walls = new boolean[]{true, true, true, true}; // means that at the beginning every 'wall' is set
         this.visited = false;
     }
 
@@ -108,5 +109,12 @@ public class Cell {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "{Cell(" + col + ","+ row +
+                "), walls=" + Arrays.toString(walls) +
+                '}';
     }
 }
