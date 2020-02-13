@@ -6,15 +6,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Cell {
     private int row;
     private int col;
-    public boolean[] walls;
+    private boolean[] walls;
     private boolean visited;
-    private double pathValue;
+    private int pathValue;
 
-    public double getPathValue() {
+    public boolean[] getWalls() {
+        return walls;
+    }
+
+    public int getPathValue() {
         return pathValue;
     }
 
-    public void setPathValue(double pathValue) {
+    public void setPathValue(int pathValue) {
         this.pathValue = pathValue;
     }
 

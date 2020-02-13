@@ -8,7 +8,7 @@ public class MazeGenerator implements Maze {
     private final int cols;
     private Deque<Cell> cellStack = new ArrayDeque<>();
     private Graph graph = new Graph();
-    private double nodePathCost = 0;
+    private int nodePathCost = 0;
 
 
     public MazeGenerator(int dim) {
@@ -31,7 +31,7 @@ public class MazeGenerator implements Maze {
         graph.getVertices().add(currentCell);
 
         // open an entry wall
-        currentCell.walls[Cell.Wall.TOP.getWall()] = false;
+        currentCell.getWalls()[Cell.Wall.TOP.getWall()] = false;
         currentCell.setVisited(true);
         currentCell.setPathValue(0);
 
@@ -63,19 +63,19 @@ public class MazeGenerator implements Maze {
     private void removeWalls(Cell currentCell, Cell nextCell) {
         int x = currentCell.getRow() - nextCell.getRow();
         if (x == 1){
-            currentCell.walls[Cell.Wall.LEFT.getWall()] = false;
-            nextCell.walls[Cell.Wall.RIGHT.getWall()] = false;
+            currentCell.getWalls()[Cell.Wall.LEFT.getWall()] = false;
+            nextCell.getWalls()[Cell.Wall.RIGHT.getWall()] = false;
         } else if (x == -1){
-            currentCell.walls[Cell.Wall.RIGHT.getWall()] = false;
-            nextCell.walls[Cell.Wall.LEFT.getWall()] = false;
+            currentCell.getWalls()[Cell.Wall.RIGHT.getWall()] = false;
+            nextCell.getWalls()[Cell.Wall.LEFT.getWall()] = false;
         }
         int y = currentCell.getCol() - nextCell.getCol();
         if (y == 1){
-            currentCell.walls[Cell.Wall.TOP.getWall()] = false;
-            nextCell.walls[Cell.Wall.BOTTOM.getWall()] = false;
+            currentCell.getWalls()[Cell.Wall.TOP.getWall()] = false;
+            nextCell.getWalls()[Cell.Wall.BOTTOM.getWall()] = false;
         } else if (y == -1){
-            currentCell.walls[Cell.Wall.BOTTOM.getWall()] = false;
-            nextCell.walls[Cell.Wall.TOP.getWall()] = false;
+            currentCell.getWalls()[Cell.Wall.BOTTOM.getWall()] = false;
+            nextCell.getWalls()[Cell.Wall.TOP.getWall()] = false;
         }
     }
 
@@ -85,12 +85,12 @@ public class MazeGenerator implements Maze {
         for (int i = 0; i < this.rows; i++) {
             // draw the top edge
             for (int j = 0; j < this.rows; j++) {
-                System.out.print((mazeGrid[j][i].walls[Cell.Wall.TOP.getWall()]) ? "+---" : "+   ");
+                System.out.print((mazeGrid[j][i].getWalls()[Cell.Wall.TOP.getWall()]) ? "+---" : "+   ");
             }
             System.out.println("+");
             // draw the left edge
             for (int j = 0; j < this.rows; j++) {
-                System.out.print((mazeGrid[j][i].walls[Cell.Wall.LEFT.getWall()]) ? "|   " : "    ");
+                System.out.print((mazeGrid[j][i].getWalls()[Cell.Wall.LEFT.getWall()]) ? "|   " : "    ");
             }
             System.out.println("|");
         }

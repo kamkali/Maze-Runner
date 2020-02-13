@@ -20,7 +20,7 @@ public class MazeSolver{
         for (Cell[] vec: mazeGrid){
             for (Cell el: vec){
                 el.setVisited(false);
-                el.setPathValue(Double.POSITIVE_INFINITY);
+                el.setPathValue(Integer.MAX_VALUE);
                 unvisitedNodes.add(el);
             }
         }
@@ -56,7 +56,7 @@ public class MazeSolver{
     private void calculateDistance(Cell currentNode, Set<Cell> unvisitedNeighboringNodes) {
         for (Cell node: unvisitedNeighboringNodes){
             node.setVisited(false);
-            double currentNodePathCost = currentNode.getPathValue() + node.getPathValue();
+            int currentNodePathCost = currentNode.getPathValue() + node.getPathValue();
             if (currentNodePathCost < currentNode.getPathValue())
                 currentNode.setPathValue(currentNodePathCost);
         }

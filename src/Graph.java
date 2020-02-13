@@ -1,6 +1,8 @@
 import java.util.HashSet;
 import java.util.Set;
 
+// TODO: implement Breadth-First Search algorithm to find relationships with known Vertices
+
 public class Graph {
     private Set<Cell> vertices = new HashSet<>();
 
@@ -36,7 +38,7 @@ public class Graph {
 
     public void findDistance(Cell initialNode, Set<Cell> vertices){
         for (Cell vert: vertices){
-            double cost = (vert.getRow() - initialNode.getRow()) + (vert.getCol() - initialNode.getCol());
+            int cost = (vert.getRow() - initialNode.getRow()) + (vert.getCol() - initialNode.getCol());
             vert.setPathValue(cost);
         }
     }
@@ -44,7 +46,7 @@ public class Graph {
     private int checkWalls(Cell cell) {
         int result = 0;
         for (int i = 0; i < 4; i++) {
-            if (!cell.walls[i])
+            if (!cell.getWalls()[i])
                 result++;
         }
         return result;
