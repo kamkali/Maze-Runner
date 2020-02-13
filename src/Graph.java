@@ -31,7 +31,7 @@ public class Graph {
                 currentNode.setOnPath(true);
                 TimeUnit.SECONDS.sleep(1);
                 maze.display();
-                //process it
+                System.out.println();
             }
             for (Cell adjacent: getPathNeighbors(currentNode)){
                 if (!visitedNodes.contains(adjacent)){
@@ -43,36 +43,48 @@ public class Graph {
 
     private Set<Cell> getPathNeighbors(Cell currentNode) {
         Set<Cell> adjacentCells = new HashSet<>();
-
         Set<Cell> unvisitedNeighboringNodes = new HashSet<>();
-
         Cell nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
-        while (nextNode != null){
-            unvisitedNeighboringNodes.add(nextNode);
+
+        for (Cell[] vec: mazeGrid){
+            for (Cell el: vec){
+                el.setVisited(false);
+            }
+        }
+
+        while (nextNode != null) {
             nextNode.setVisited(true);
+            unvisitedNeighboringNodes.add(nextNode);
             nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
         }
 
-        for (Cell cell: unvisitedNeighboringNodes) {
+        for (Cell cell : unvisitedNeighboringNodes) {
             // 4 cases
             // 1) current node below
-            if ((currentNode.getCol() > cell.getCol()) && (!currentNode.getWalls()[Cell.Wall.TOP.getWall()] && !cell.getWalls()[Cell.Wall.BOTTOM.getWall()])) {
-                adjacentCells.add(cell);
+            if (currentNode.getCol() > cell.getCol()) {
+                if (!currentNode.getWalls()[Cell.Wall.TOP.getWall()] && !cell.getWalls()[Cell.Wall.BOTTOM.getWall()]) {
+                    adjacentCells.add(cell);
+                }
             }
             // 2) current node above
-            if (currentNode.getCol() < cell.getCol() && (!currentNode.getWalls()[Cell.Wall.BOTTOM.getWall()] && !cell.getWalls()[Cell.Wall.TOP.getWall()])){
-                adjacentCells.add(cell);
+            if (currentNode.getCol() < cell.getCol()) {
+                if (!currentNode.getWalls()[Cell.Wall.BOTTOM.getWall()] && !cell.getWalls()[Cell.Wall.TOP.getWall()]) {
+                    adjacentCells.add(cell);
+                }
             }
             // 3) current node on right side
-            if (currentNode.getRow() > cell.getRow() && (!currentNode.getWalls()[Cell.Wall.LEFT.getWall()] && !cell.getWalls()[Cell.Wall.RIGHT.getWall()])){
-                adjacentCells.add(cell);
+            if (currentNode.getRow() > cell.getRow()) {
+                if (!currentNode.getWalls()[Cell.Wall.LEFT.getWall()] && !cell.getWalls()[Cell.Wall.RIGHT.getWall()]) {
+                    adjacentCells.add(cell);
+                }
             }
             // 3) current node on left side
-            if (currentNode.getRow() < cell.getRow() && (!currentNode.getWalls()[Cell.Wall.RIGHT.getWall()] && !cell.getWalls()[Cell.Wall.LEFT.getWall()])){
-                adjacentCells.add(cell);
+            if (currentNode.getRow() < cell.getRow()) {
+                if (!currentNode.getWalls()[Cell.Wall.RIGHT.getWall()] && !cell.getWalls()[Cell.Wall.LEFT.getWall()]) {
+                    adjacentCells.add(cell);
+                }
             }
         }
-
         return adjacentCells;
     }
 

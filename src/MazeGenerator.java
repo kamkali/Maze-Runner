@@ -27,6 +27,8 @@ public class MazeGenerator implements Maze {
 
         // initial cell
         Cell currentCell = mazeGrid[0][0];
+        // exit cell
+        mazeGrid[rows - 1][cols - 1].getWalls()[Cell.Wall.BOTTOM.getWall()] = false;
 
         // open an entry wall
         currentCell.getWalls()[Cell.Wall.TOP.getWall()] = false;
