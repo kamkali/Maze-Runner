@@ -1,6 +1,5 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.concurrent.TimeUnit;
 
 public class MazeGenerator implements Maze {
 
@@ -43,10 +42,6 @@ public class MazeGenerator implements Maze {
         Cell nextCell = currentCell.checkNeighbors(mazeGrid, currentCell.getRow(), currentCell.getCol());
 
         if (nextCell != null){
-//            currentCell.setOnPath(true);
-//            TimeUnit.SECONDS.sleep(2);
-//            this.display();
-//            System.out.println();
             nextCell.setVisited(true);
             cellStack.push(currentCell);
 
@@ -56,10 +51,6 @@ public class MazeGenerator implements Maze {
             return findCell(currentCell);
 
         } else if (!cellStack.isEmpty()) {
-//            currentCell.setOnPath(true);
-//            this.display();
-//            TimeUnit.SECONDS.sleep(2);
-//            graph.getVertices().add(currentCell);
             currentCell = cellStack.pop();
             return findCell(currentCell);
         }

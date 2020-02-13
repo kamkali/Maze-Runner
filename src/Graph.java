@@ -4,7 +4,9 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-// TODO: implement Breadth-First Search algorithm to find relationships with known Vertices
+// DONE: implement Breadth-First Search algorithm to find relationships with known Vertices
+// TODO: Find relationships with Verticies
+// TODO: Find path costs
 
 public class Graph {
     private Set<Cell> vertices = new HashSet<>();
@@ -61,44 +63,31 @@ public class Graph {
         for (Cell cell : unvisitedNeighboringNodes) {
             // 4 cases
             // 1) current node below
-            if (currentNode.getCol() > cell.getCol()) {
-                if (!currentNode.getWalls()[Cell.Wall.TOP.getWall()] && !cell.getWalls()[Cell.Wall.BOTTOM.getWall()]) {
+            if (currentNode.getCol() > cell.getCol() &&
+                    (!currentNode.getWalls()[Cell.Wall.TOP.getWall()] && !cell.getWalls()[Cell.Wall.BOTTOM.getWall()])) {
                     adjacentCells.add(cell);
                 }
-            }
             // 2) current node above
-            if (currentNode.getCol() < cell.getCol()) {
-                if (!currentNode.getWalls()[Cell.Wall.BOTTOM.getWall()] && !cell.getWalls()[Cell.Wall.TOP.getWall()]) {
+            if (currentNode.getCol() < cell.getCol() &&
+                    (!currentNode.getWalls()[Cell.Wall.BOTTOM.getWall()] && !cell.getWalls()[Cell.Wall.TOP.getWall()])) {
                     adjacentCells.add(cell);
                 }
-            }
             // 3) current node on right side
-            if (currentNode.getRow() > cell.getRow()) {
-                if (!currentNode.getWalls()[Cell.Wall.LEFT.getWall()] && !cell.getWalls()[Cell.Wall.RIGHT.getWall()]) {
+            if (currentNode.getRow() > cell.getRow() &&
+                    (!currentNode.getWalls()[Cell.Wall.LEFT.getWall()] && !cell.getWalls()[Cell.Wall.RIGHT.getWall()])) {
                     adjacentCells.add(cell);
                 }
-            }
             // 3) current node on left side
-            if (currentNode.getRow() < cell.getRow()) {
-                if (!currentNode.getWalls()[Cell.Wall.RIGHT.getWall()] && !cell.getWalls()[Cell.Wall.LEFT.getWall()]) {
+            if (currentNode.getRow() < cell.getRow() &&
+                    (!currentNode.getWalls()[Cell.Wall.RIGHT.getWall()] && !cell.getWalls()[Cell.Wall.LEFT.getWall()])) {
                     adjacentCells.add(cell);
                 }
-            }
         }
         return adjacentCells;
     }
 
-    public Set<Cell> getVertices() {
-        return vertices;
-    }
-
-    public void setVertices(Set<Cell> vertices) {
-        this.vertices = vertices;
-    }
-
     public Set<Cell> findVertices(Maze maze){
         Set<Cell> unvisitedVertices = new HashSet<>();
-        Cell[][] mazeGrid = maze.getMazeGrid();
 
         // add initial node
         unvisitedVertices.add(mazeGrid[0][0]);
@@ -118,6 +107,7 @@ public class Graph {
         return unvisitedVertices;
     }
 
+    // fix it
     public void findDistance(Cell initialNode, Set<Cell> vertices){
         for (Cell vert: vertices){
             int cost = (vert.getRow() - initialNode.getRow()) + (vert.getCol() - initialNode.getCol());
