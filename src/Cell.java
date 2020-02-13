@@ -9,6 +9,15 @@ public class Cell {
     private boolean[] walls;
     private boolean visited;
     private int pathValue;
+    private boolean onPath;
+
+    public boolean isOnPath() {
+        return onPath;
+    }
+
+    public void setOnPath(boolean onPath) {
+        this.onPath = onPath;
+    }
 
     public boolean[] getWalls() {
         return walls;

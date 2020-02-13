@@ -1,10 +1,80 @@
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 // TODO: implement Breadth-First Search algorithm to find relationships with known Vertices
 
 public class Graph {
     private Set<Cell> vertices = new HashSet<>();
+
+    private Cell[][] mazeGrid;
+    private Maze maze;
+
+    public Graph(Maze maze) {
+        this.maze = maze;
+        this.mazeGrid = maze.getMazeGrid();
+    }
+
+    public void bfs(Cell startingNode) throws InterruptedException {
+        Queue<Cell> queue = new LinkedList<>();
+        Set<Cell> visitedNodes = new HashSet<>();
+
+        queue.add(startingNode);
+
+        while (!queue.isEmpty()){
+            Cell currentNode = queue.poll();
+
+            if (!visitedNodes.contains(currentNode)){
+                visitedNodes.add(currentNode);
+                currentNode.setOnPath(true);
+                TimeUnit.SECONDS.sleep(1);
+                maze.display();
+                //process it
+            }
+            for (Cell adjacent: getPathNeighbors(currentNode)){
+                if (!visitedNodes.contains(adjacent)){
+                    queue.add(adjacent);
+                }
+            }
+        }
+    }
+
+    private Set<Cell> getPathNeighbors(Cell currentNode) {
+        Set<Cell> adjacentCells = new HashSet<>();
+
+        Set<Cell> unvisitedNeighboringNodes = new HashSet<>();
+
+        Cell nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
+        while (nextNode != null){
+            unvisitedNeighboringNodes.add(nextNode);
+            nextNode.setVisited(true);
+            nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
+        }
+
+        for (Cell cell: unvisitedNeighboringNodes) {
+            // 4 cases
+            // 1) current node below
+            if ((currentNode.getCol() > cell.getCol()) && (!currentNode.getWalls()[Cell.Wall.TOP.getWall()] && !cell.getWalls()[Cell.Wall.BOTTOM.getWall()])) {
+                adjacentCells.add(cell);
+            }
+            // 2) current node above
+            if (currentNode.getCol() < cell.getCol() && (!currentNode.getWalls()[Cell.Wall.BOTTOM.getWall()] && !cell.getWalls()[Cell.Wall.TOP.getWall()])){
+                adjacentCells.add(cell);
+            }
+            // 3) current node on right side
+            if (currentNode.getRow() > cell.getRow() && (!currentNode.getWalls()[Cell.Wall.LEFT.getWall()] && !cell.getWalls()[Cell.Wall.RIGHT.getWall()])){
+                adjacentCells.add(cell);
+            }
+            // 3) current node on left side
+            if (currentNode.getRow() < cell.getRow() && (!currentNode.getWalls()[Cell.Wall.RIGHT.getWall()] && !cell.getWalls()[Cell.Wall.LEFT.getWall()])){
+                adjacentCells.add(cell);
+            }
+        }
+
+        return adjacentCells;
+    }
 
     public Set<Cell> getVertices() {
         return vertices;

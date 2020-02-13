@@ -1,14 +1,20 @@
 import java.util.Set;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Maze myMaze = new MazeGenerator(5);
-
         myMaze.display();
 
         MazeSolver mazeSolver = new MazeSolver(myMaze.getMazeGrid());
         mazeSolver.solveMaze();
-        Graph graph = new Graph();
+        Graph graph = new Graph(myMaze);
+
+        graph.bfs(myMaze.getMazeGrid()[0][0]);
+
+
+
+
+
 
         Set<Cell> vertices;
         vertices = graph.findVertices(myMaze);

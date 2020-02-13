@@ -1,5 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.TimeUnit;
 
 public class MazeGenerator implements Maze {
 
@@ -7,18 +8,16 @@ public class MazeGenerator implements Maze {
     private final int rows;
     private final int cols;
     private Deque<Cell> cellStack = new ArrayDeque<>();
-    private Graph graph = new Graph();
-    private int nodePathCost = 0;
 
 
-    public MazeGenerator(int dim) {
+    public MazeGenerator(int dim) throws InterruptedException {
         this.cols = dim;
         this.rows = dim;
         this.generate();
     }
 
-    private void generate() {
-        mazeGrid = new Cell[rows][cols];
+    private void generate() throws InterruptedException {
+        mazeGrid = new Cell[cols][rows];
 
         for (int i = 0; i < mazeGrid.length; i++) {
             for (int j = 0; j < mazeGrid[i].length; j++) {
@@ -28,7 +27,6 @@ public class MazeGenerator implements Maze {
 
         // initial cell
         Cell currentCell = mazeGrid[0][0];
-        graph.getVertices().add(currentCell);
 
         // open an entry wall
         currentCell.getWalls()[Cell.Wall.TOP.getWall()] = false;
@@ -39,10 +37,14 @@ public class MazeGenerator implements Maze {
     }
 
 
-    private Cell findCell(Cell currentCell){
+    private Cell findCell(Cell currentCell) throws InterruptedException {
         Cell nextCell = currentCell.checkNeighbors(mazeGrid, currentCell.getRow(), currentCell.getCol());
 
         if (nextCell != null){
+//            currentCell.setOnPath(true);
+//            TimeUnit.SECONDS.sleep(2);
+//            this.display();
+//            System.out.println();
             nextCell.setVisited(true);
             cellStack.push(currentCell);
 
@@ -52,6 +54,9 @@ public class MazeGenerator implements Maze {
             return findCell(currentCell);
 
         } else if (!cellStack.isEmpty()) {
+//            currentCell.setOnPath(true);
+//            this.display();
+//            TimeUnit.SECONDS.sleep(2);
 //            graph.getVertices().add(currentCell);
             currentCell = cellStack.pop();
             return findCell(currentCell);
@@ -90,7 +95,11 @@ public class MazeGenerator implements Maze {
             System.out.println("+");
             // draw the left edge
             for (int j = 0; j < this.rows; j++) {
-                System.out.print((mazeGrid[j][i].getWalls()[Cell.Wall.LEFT.getWall()]) ? "|   " : "    ");
+                if (mazeGrid[j][i].isOnPath()) {
+                    System.out.print((mazeGrid[j][i].getWalls()[Cell.Wall.LEFT.getWall()]) ? "|///" : "////");
+                } else {
+                    System.out.print((mazeGrid[j][i].getWalls()[Cell.Wall.LEFT.getWall()]) ? "|   " : "    ");
+                }
             }
             System.out.println("|");
         }
@@ -98,6 +107,7 @@ public class MazeGenerator implements Maze {
         for (int j = 0; j < this.rows - 1; j++) {
             System.out.print("+---");
         }
+        // draw an exit
         System.out.print("+   ");
         System.out.println("+");
     }
