@@ -10,6 +10,11 @@ public class Cell {
     private boolean visited;
     private int pathValue;
     private boolean onPath;
+    private List<Cell> neighboringNodes = new ArrayList<>();
+
+    public List<Cell> getNeighboringNodes() {
+        return neighboringNodes;
+    }
 
     public boolean isOnPath() {
         return onPath;
@@ -127,8 +132,8 @@ public class Cell {
     @Override
     public String toString() {
         return "{Cell(" + col + ","+ row +
-                "), walls=" + Arrays.toString(walls) +
-                " , cost=" + pathValue +
+//                "), walls=" + Arrays.toString(walls) +
+//                " , cost=" + pathValue +
                 '}';
     }
 }

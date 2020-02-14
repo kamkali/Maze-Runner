@@ -1,7 +1,4 @@
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 // DONE: implement Breadth-First Search algorithm to find relationships with known Vertices
@@ -9,10 +6,10 @@ import java.util.concurrent.TimeUnit;
 // TODO: Find path costs
 
 public class Graph {
-    private Set<Cell> vertices = new HashSet<>();
-
     private Cell[][] mazeGrid;
     private Maze maze;
+    Map<Cell, List<Cell>> nodesRelation = new HashMap<>();
+    private Set<Cell> vertices = new HashSet<>();
 
     public Graph(Maze maze) {
         this.maze = maze;
@@ -22,8 +19,12 @@ public class Graph {
     public void bfs(Cell startingNode) throws InterruptedException {
         Queue<Cell> queue = new LinkedList<>();
         Set<Cell> visitedNodes = new HashSet<>();
+        List<Cell> neighboringNodes = new ArrayList<>();
+        Cell node = startingNode;
+        Cell previousNode;
 
         queue.add(startingNode);
+        vertices = findAllVertices();
 
         while (!queue.isEmpty()){
             Cell currentNode = queue.poll();
@@ -31,7 +32,22 @@ public class Graph {
             if (!visitedNodes.contains(currentNode)){
                 visitedNodes.add(currentNode);
                 currentNode.setOnPath(true);
-//                TimeUnit.MILLISECONDS.sleep(500);
+
+                if (vertices.contains(currentNode)){
+                    previousNode = node;
+                    node = currentNode;
+
+                    if (node != previousNode) {
+                        previousNode.getNeighboringNodes().add(node);
+                        node.getNeighboringNodes().add(previousNode);
+
+                        nodesRelation.put(previousNode, previousNode.getNeighboringNodes());
+                        nodesRelation.put(node, node.getNeighboringNodes());
+                    }
+                }
+
+
+//                TimeUnit.MILLISECONDS.sleep(1000);
 //                maze.display();
 //                System.out.println();
             }
@@ -87,7 +103,7 @@ public class Graph {
         return adjacentCells;
     }
 
-    public Set<Cell> findVertices(Maze maze){
+    public Set<Cell> findAllVertices(){
         Set<Cell> unvisitedVertices = new HashSet<>();
 
         // add initial node
@@ -123,5 +139,9 @@ public class Graph {
                 result++;
         }
         return result;
+    }
+
+    public Map<Cell, List<Cell>> getNodesRelation() {
+        return nodesRelation;
     }
 }

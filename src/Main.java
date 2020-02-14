@@ -3,7 +3,7 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Maze myMaze = new MazeGenerator(5);
+        Maze myMaze = new MazeGenerator(10);
         myMaze.display();
 
         MazeSolver mazeSolver = new MazeSolver(myMaze.getMazeGrid());
@@ -14,12 +14,16 @@ public class Main {
 
         myMaze.display();
 
+        for (Cell cell: graph.nodesRelation.keySet()) {
+            System.out.println(cell + " : " + graph.nodesRelation.get(cell));
+        }
 
 
+        System.out.println();
 
         Set<Cell> vertices;
-        vertices = graph.findVertices(myMaze);
-        graph.findDistance(myMaze.getMazeGrid()[0][0], vertices);   // wrong
+        vertices = graph.findAllVertices();
+//        graph.findDistance(myMaze.getMazeGrid()[0][0], vertices);   // wrong
 
         System.out.println(vertices);
         System.out.println(vertices.size());
