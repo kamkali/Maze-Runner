@@ -19,14 +19,15 @@ public class Graph {
     public void bfs(Cell startingNode) throws InterruptedException {
         Queue<Cell> queue = new LinkedList<>();
         Set<Cell> visitedNodes = new HashSet<>();
-        List<Cell> neighboringNodes = new ArrayList<>();
         Cell node = startingNode;
         Cell previousNode;
+        Stack<Cell> savedNodes = new Stack<>();
 
         queue.add(startingNode);
         vertices = findAllVertices();
 
         while (!queue.isEmpty()){
+            int queueSize = queue.size();
             Cell currentNode = queue.poll();
 
             if (!visitedNodes.contains(currentNode)){
@@ -37,12 +38,18 @@ public class Graph {
                     previousNode = node;
                     node = currentNode;
 
-                    if (node != previousNode) {
-                        previousNode.getNeighboringNodes().add(node);
-                        node.getNeighboringNodes().add(previousNode);
+                    if (queueSize > 1){
+                        savedNodes.push(previousNode);
+                    }
 
-                        nodesRelation.put(previousNode, previousNode.getNeighboringNodes());
-                        nodesRelation.put(node, node.getNeighboringNodes());
+                    if (node != previousNode) {
+                        //if (!nodesRelation.get(node).contains(previousNode) || nodesRelation.get(previousNode).contains(node)) {
+                            previousNode.getNeighboringNodes().add(node);
+                            node.getNeighboringNodes().add(previousNode);
+
+                            nodesRelation.put(previousNode, previousNode.getNeighboringNodes());
+                            nodesRelation.put(node, node.getNeighboringNodes());
+                        //}
                     }
                 }
 
@@ -57,6 +64,16 @@ public class Graph {
                 }
             }
         }
+
+        //meh
+//        while (!savedNodes.isEmpty()){
+//            for (Cell[] vec: mazeGrid){
+//                for (Cell el: vec){
+//                    el.setOnPath(false);
+//                }
+//            }
+//            bfs(savedNodes.pop());
+//        }
     }
 
     private Set<Cell> getPathNeighbors(Cell currentNode) {
@@ -116,6 +133,10 @@ public class Graph {
          */
         for (Cell[] vec: mazeGrid){
             for (Cell el: vec){
+                int result = checkWalls(el);
+//                if (result > 3){
+//                    System.out.println("4V: " +el);
+//                }
                 if (checkWalls(el) != 2){
                     unvisitedVertices.add(el);
                 }

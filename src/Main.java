@@ -3,7 +3,7 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Maze myMaze = new MazeGenerator(10);
+        Maze myMaze = new MazeGenerator(40);
         myMaze.display();
 
         MazeSolver mazeSolver = new MazeSolver(myMaze.getMazeGrid());
