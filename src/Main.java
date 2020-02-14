@@ -2,6 +2,7 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+
         Maze myMaze = new MazeGenerator(5);
         myMaze.display();
 
@@ -11,7 +12,7 @@ public class Main {
 
         graph.bfs(myMaze.getMazeGrid()[0][0]);
 
-
+        myMaze.display();
 
 
 

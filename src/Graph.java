@@ -31,9 +31,9 @@ public class Graph {
             if (!visitedNodes.contains(currentNode)){
                 visitedNodes.add(currentNode);
                 currentNode.setOnPath(true);
-                TimeUnit.SECONDS.sleep(1);
-                maze.display();
-                System.out.println();
+//                TimeUnit.MILLISECONDS.sleep(500);
+//                maze.display();
+//                System.out.println();
             }
             for (Cell adjacent: getPathNeighbors(currentNode)){
                 if (!visitedNodes.contains(adjacent)){
@@ -44,15 +44,16 @@ public class Graph {
     }
 
     private Set<Cell> getPathNeighbors(Cell currentNode) {
-        Set<Cell> adjacentCells = new HashSet<>();
-        Set<Cell> unvisitedNeighboringNodes = new HashSet<>();
-        Cell nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
 
         for (Cell[] vec: mazeGrid){
             for (Cell el: vec){
                 el.setVisited(false);
             }
         }
+
+        Set<Cell> adjacentCells = new HashSet<>();
+        Set<Cell> unvisitedNeighboringNodes = new HashSet<>();
+        Cell nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
 
         while (nextNode != null) {
             nextNode.setVisited(true);
