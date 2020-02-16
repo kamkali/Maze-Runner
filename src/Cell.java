@@ -8,9 +8,18 @@ public class Cell {
     private int col;
     private boolean[] walls;
     private boolean visited;
+    private boolean visitedVertex;
     private int pathValue;
     private boolean onPath;
     private List<Cell> neighboringNodes = new ArrayList<>();
+
+    public boolean isVisitedVertex() {
+        return visitedVertex;
+    }
+
+    public void setVisitedVertex(boolean visitedVertex) {
+        this.visitedVertex = visitedVertex;
+    }
 
     public List<Cell> getNeighboringNodes() {
         return neighboringNodes;
@@ -50,6 +59,7 @@ public class Cell {
         // clock-wise order
         this.walls = new boolean[]{true, true, true, true}; // means that at the beginning every 'wall' is set
         this.visited = false;
+        this.visitedVertex = false;
     }
 
     public enum Wall{
