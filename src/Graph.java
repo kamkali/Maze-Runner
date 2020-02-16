@@ -17,8 +17,6 @@ public class Graph {
         Queue<Cell> queue = new LinkedList<>();
         Set<Cell> visitedNodes = new HashSet<>();
         Set<Cell> vertices = findAllVertices();
-        Cell node = startingNode;
-        Cell previousNode;
 
         clearVisitedMarkers();
         queue.add(startingNode);
@@ -30,31 +28,22 @@ public class Graph {
                 visitedNodes.add(currentNode);
                 currentNode.setOnPath(true);
 
-                TimeUnit.MILLISECONDS.sleep(1000);
-                maze.display();
-                System.out.println();
+//                TimeUnit.MILLISECONDS.sleep(750);
+//                maze.display();
+//                System.out.println();
 
-                if (vertices.contains(currentNode)){
-                    previousNode = node;
-                    node = currentNode;
-
-                    if (node != previousNode) {
-                        previousNode.getNeighboringNodes().add(node);
-                        node.getNeighboringNodes().add(previousNode);
-                        nodesRelation.put(previousNode, previousNode.getNeighboringNodes());
-                        nodesRelation.put(node, node.getNeighboringNodes());
-                    }
+                if (vertices.contains(currentNode) && startingNode != currentNode){
+                    startingNode.getNeighboringNodes().add(currentNode);
+                    nodesRelation.put(startingNode, startingNode.getNeighboringNodes());
                 }
             }
-
-
-                for (Cell adjacent : getPathNeighbors(currentNode)) {
-                    if (!visitedNodes.contains(adjacent)) {
-                        if (vertices.contains(adjacent))
-                            adjacent.setVisitedVertex(true);
-                        queue.add(adjacent);
-                    }
+            for (Cell adjacent : getPathNeighbors(currentNode)) {
+                if (!visitedNodes.contains(adjacent)) {
+                    if (vertices.contains(adjacent))
+                        adjacent.setVisitedVertex(true);
+                    queue.add(adjacent);
                 }
+            }
         }
     }
 
@@ -66,7 +55,6 @@ public class Graph {
             clearPathMarkers();
             clearVisitedMarkers();
             clearVisitedVertices();
-            System.out.println("Finding vertices for" + vertex);
             bfs(vertex);
         }
     }
@@ -151,10 +139,6 @@ public class Graph {
          */
         for (Cell[] vec: maze.getMazeGrid()){
             for (Cell el: vec){
-//                int result = checkWalls(el);
-//                if (result > 3){
-//                    System.out.println("4V: " +el);
-//                }
                 if (checkWalls(el) != 2){
                     unvisitedVertices.add(el);
                 }
@@ -183,33 +167,4 @@ public class Graph {
     public Map<Cell, List<Cell>> getNodesRelation() {
         return nodesRelation;
     }
-
-//    private void findNeighboringVertices(Cell startingNode){
-//        Set<Cell> vertices = findAllVertices();
-//        Stack<Cell> savedNodes = new Stack<>();
-//        Cell node = startingNode;
-//        Cell previousNode;
-//        Cell currentNode;
-//
-//        Set<Cell> neighboringNodes = getPathNeighbors(node);
-//
-//
-//        if (vertices.contains(node)){
-//            previousNode = node;
-//
-//            for (int i = 0; i < neighboringNodes.size(); i++) {
-//                findNeighboringVertices(node);
-//            }
-//
-//            if (node != previousNode) {
-////                        if (!nodesRelation.get(node).contains(previousNode) || nodesRelation.get(previousNode).contains(node)) {
-//                previousNode.getNeighboringNodes().add(node);
-//                node.getNeighboringNodes().add(previousNode);
-//
-//                nodesRelation.put(previousNode, previousNode.getNeighboringNodes());
-//                nodesRelation.put(node, node.getNeighboringNodes());
-////                        }
-//            }
-//        }
-//    }
 }
