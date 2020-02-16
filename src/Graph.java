@@ -15,12 +15,16 @@ public class Graph {
 
     private void bfs(Cell startingNode) throws InterruptedException {
         Queue<Cell> queue = new LinkedList<>();
+//        Stack<Cell> queueStack = new Stack<>();
         int pathCost = 0;
         Set<Cell> visitedNodes = new HashSet<>();
         Set<Cell> vertices = findAllVertices();
 
         clearVisitedMarkers();
         queue.add(startingNode);
+//
+//        if (queue.isEmpty())
+//            queueStack.pop();
 
         while (!queue.isEmpty()){
             Cell currentNode = queue.poll();
@@ -30,19 +34,27 @@ public class Graph {
                 currentNode.setOnPath(true);
 
 //                TimeUnit.MILLISECONDS.sleep(750);
-//                maze.display();
-//                System.out.println();
+                maze.display();
+                System.out.println();
 
                 if (vertices.contains(currentNode) && startingNode != currentNode){
                     startingNode.getNeighboringNodes().put(currentNode, pathCost);
                     nodesRelation.put(startingNode, startingNode.getNeighboringNodes());
+                    pathCost = 0;
                 }
             }
             pathCost++;
-            for (Cell adjacent : getPathNeighbors(currentNode)) {
+            Set<Cell> neighbors = getPathNeighbors(currentNode);
+            for (Cell adjacent : neighbors) {
                 if (!visitedNodes.contains(adjacent)) {
                     if (vertices.contains(adjacent))
                         adjacent.setVisitedVertex(true);
+//
+//                    if (neighbors.size() > 1) {
+//                        queueStack.push(adjacent);
+//                        neighbors.remove(adjacent);
+//                        continue;
+//                    }
                     queue.add(adjacent);
                 }
             }
