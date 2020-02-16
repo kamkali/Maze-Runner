@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cell {
@@ -11,7 +9,7 @@ public class Cell {
     private boolean visitedVertex;
     private int pathValue;
     private boolean onPath;
-    private List<Cell> neighboringNodes = new ArrayList<>();
+    private Map<Cell, Integer> neighboringNodes = new HashMap<>();
 
     public boolean isVisitedVertex() {
         return visitedVertex;
@@ -21,7 +19,7 @@ public class Cell {
         this.visitedVertex = visitedVertex;
     }
 
-    public List<Cell> getNeighboringNodes() {
+    public Map<Cell, Integer> getNeighboringNodes() {
         return neighboringNodes;
     }
 

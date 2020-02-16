@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Graph {
     private  Maze maze;
-    private Map<Cell, List<Cell>> nodesRelation = new HashMap<>();
+    private Map<Cell, Map<Cell, Integer>> nodesRelation = new HashMap<>();
 
     public Graph(Maze maze) {
         this.maze = maze;
@@ -15,6 +15,7 @@ public class Graph {
 
     private void bfs(Cell startingNode) throws InterruptedException {
         Queue<Cell> queue = new LinkedList<>();
+        int pathCost = 0;
         Set<Cell> visitedNodes = new HashSet<>();
         Set<Cell> vertices = findAllVertices();
 
@@ -33,10 +34,11 @@ public class Graph {
 //                System.out.println();
 
                 if (vertices.contains(currentNode) && startingNode != currentNode){
-                    startingNode.getNeighboringNodes().add(currentNode);
+                    startingNode.getNeighboringNodes().put(currentNode, pathCost);
                     nodesRelation.put(startingNode, startingNode.getNeighboringNodes());
                 }
             }
+            pathCost++;
             for (Cell adjacent : getPathNeighbors(currentNode)) {
                 if (!visitedNodes.contains(adjacent)) {
                     if (vertices.contains(adjacent))
@@ -147,13 +149,6 @@ public class Graph {
         return unvisitedVertices;
     }
 
-    // fix it
-    public void findDistance(Cell initialNode, Set<Cell> vertices){
-        for (Cell vert: vertices){
-            int cost = (vert.getRow() - initialNode.getRow()) + (vert.getCol() - initialNode.getCol());
-            vert.setPathValue(cost);
-        }
-    }
 
     private int checkWalls(Cell cell) {
         int result = 0;
@@ -164,7 +159,7 @@ public class Graph {
         return result;
     }
 
-    public Map<Cell, List<Cell>> getNodesRelation() {
+    public Map<Cell, Map<Cell, Integer>> getNodesRelation() {
         return nodesRelation;
     }
 }
