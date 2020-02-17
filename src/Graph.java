@@ -24,7 +24,7 @@ public class Graph {
         neighboringPaths = getPathNeighbors(startingNode);
         for (int i = 0; i < neighboringPaths.size(); i++) {
             Cell savedCell = neighboringPaths.pop();
-            savedCell.setVisitedVertex(true);
+            savedCell.setSavedNode(true);
             savedPaths.push(savedCell);
         }
 
@@ -46,22 +46,20 @@ public class Graph {
                     startingNode.getNeighboringNodes().put(currentNode, pathCost);
                     nodesRelation.put(startingNode, startingNode.getNeighboringNodes());
                     pathCost = 0;
+                    currentNode.setVisitedVertex(true);
                 }
             }
             pathCost++;
 
             Stack<Cell> neighbors = getPathNeighbors(currentNode);
             for (Cell adjacent : neighbors) {
-                if (!visitedNodes.contains(adjacent) && !adjacent.isVisitedVertex()) {
-                    if (vertices.contains(adjacent))
-                        adjacent.setVisitedVertex(true);
-
+                if (!visitedNodes.contains(adjacent) && !adjacent.isVisitedVertex() && !adjacent.isSavedNode()) {
                     queue.add(adjacent);
                 }
             }
             if (queue.isEmpty() && !savedPaths.isEmpty()){
                 Cell nextPathCell = savedPaths.pop();
-                nextPathCell.setVisitedVertex(false);
+                nextPathCell.setSavedNode(false);
                 queue.add(nextPathCell);
             }
         }
@@ -79,30 +77,6 @@ public class Graph {
         }
     }
 
-    private void clearVisitedVertices() {
-        for (Cell[] vec: maze.getMazeGrid()){
-            for (Cell el: vec){
-                el.setVisitedVertex(false);
-            }
-        }
-    }
-
-    private void clearPathMarkers(){
-        for (Cell[] vec: maze.getMazeGrid()){
-            for (Cell el: vec){
-                el.setOnPath(false);
-            }
-        }
-    }
-
-
-    private void clearVisitedMarkers(){
-        for (Cell[] vec: maze.getMazeGrid()){
-            for (Cell el: vec){
-                el.setVisited(false);
-            }
-        }
-    }
 
     private Stack<Cell> getPathNeighbors(Cell currentNode) {
         Stack<Cell> adjacentCells = new Stack<>();
@@ -137,7 +111,7 @@ public class Graph {
                     (!currentNode.getWalls()[Cell.Wall.LEFT.getWall()] && !cell.getWalls()[Cell.Wall.RIGHT.getWall()])) {
                 adjacentCells.push(cell);
             }
-            // 3) current node on left side
+            // 4) current node on left side
             if (currentNode.getRow() < cell.getRow() &&
                     (!currentNode.getWalls()[Cell.Wall.RIGHT.getWall()] && !cell.getWalls()[Cell.Wall.LEFT.getWall()])) {
                 adjacentCells.push(cell);
@@ -165,6 +139,31 @@ public class Graph {
             }
         }
         return unvisitedVertices;
+    }
+
+    private void clearVisitedVertices() {
+        for (Cell[] vec : maze.getMazeGrid()) {
+            for (Cell el : vec) {
+                el.setVisitedVertex(false);
+            }
+        }
+    }
+
+    private void clearPathMarkers() {
+        for (Cell[] vec : maze.getMazeGrid()) {
+            for (Cell el : vec) {
+                el.setOnPath(false);
+            }
+        }
+    }
+
+
+    private void clearVisitedMarkers() {
+        for (Cell[] vec : maze.getMazeGrid()) {
+            for (Cell el : vec) {
+                el.setVisited(false);
+            }
+        }
     }
 
 

@@ -9,7 +9,16 @@ public class Cell {
     private boolean visitedVertex;
     private int pathValue;
     private boolean onPath;
+    private boolean savedNode;
     private Map<Cell, Integer> neighboringNodes = new HashMap<>();
+
+    public boolean isSavedNode() {
+        return savedNode;
+    }
+
+    public void setSavedNode(boolean savedNode) {
+        this.savedNode = savedNode;
+    }
 
     public boolean isVisitedVertex() {
         return visitedVertex;
