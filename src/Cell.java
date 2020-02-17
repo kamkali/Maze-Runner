@@ -146,6 +146,31 @@ public class Cell {
         }
     }
 
+    public static void clearVisitedVertices(Maze maze) {
+        for (Cell[] vec : maze.getMazeGrid()) {
+            for (Cell el : vec) {
+                el.setVisitedVertex(false);
+            }
+        }
+    }
+
+    public static void clearPathMarkers(Maze maze) {
+        for (Cell[] vec : maze.getMazeGrid()) {
+            for (Cell el : vec) {
+                el.setOnPath(false);
+            }
+        }
+    }
+
+
+    public static void clearVisitedMarkers(Maze maze) {
+        for (Cell[] vec : maze.getMazeGrid()) {
+            for (Cell el : vec) {
+                el.setVisited(false);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "{Cell(" + col + ","+ row +

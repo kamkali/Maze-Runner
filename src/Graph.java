@@ -1,9 +1,6 @@
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-// DONE: implement Breadth-First Search algorithm to find relationships with known Vertices
-// DONE: Find relationships with Verticies
-// TODO: Find path costs
 
 public class Graph {
     private  Maze maze;
@@ -70,20 +67,20 @@ public class Graph {
         Set<Cell> vertices = findAllVertices();
 
         for (Cell vertex: vertices){
-            clearPathMarkers();
-            clearVisitedMarkers();
-            clearVisitedVertices();
+            Cell.clearPathMarkers(maze);
+            Cell.clearVisitedMarkers(maze);
+            Cell.clearVisitedVertices(maze);
             bfs(vertex);
         }
     }
 
 
-    private Stack<Cell> getPathNeighbors(Cell currentNode) {
+    public Stack<Cell> getPathNeighbors(Cell currentNode) {
         Stack<Cell> adjacentCells = new Stack<>();
         if (currentNode.isVisitedVertex())
             return adjacentCells;
 
-        clearVisitedMarkers();
+        Cell.clearVisitedMarkers(maze);
 
         Set<Cell> unvisitedNeighboringNodes = new HashSet<>();
         Cell nextNode = currentNode.checkNeighbors(this.maze.getMazeGrid(), currentNode.getRow(), currentNode.getCol());
@@ -140,32 +137,6 @@ public class Graph {
         }
         return unvisitedVertices;
     }
-
-    private void clearVisitedVertices() {
-        for (Cell[] vec : maze.getMazeGrid()) {
-            for (Cell el : vec) {
-                el.setVisitedVertex(false);
-            }
-        }
-    }
-
-    private void clearPathMarkers() {
-        for (Cell[] vec : maze.getMazeGrid()) {
-            for (Cell el : vec) {
-                el.setOnPath(false);
-            }
-        }
-    }
-
-
-    private void clearVisitedMarkers() {
-        for (Cell[] vec : maze.getMazeGrid()) {
-            for (Cell el : vec) {
-                el.setVisited(false);
-            }
-        }
-    }
-
 
     private int checkWalls(Cell cell) {
         int result = 0;

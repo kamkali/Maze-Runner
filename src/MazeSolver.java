@@ -29,18 +29,17 @@ public class MazeSolver{
         Cell initialNode = mazeGrid[0][0];  // pick entry node
         Cell exitNode = mazeGrid[mazeGrid.length - 1][mazeGrid[0].length - 1];  // pick exit node
         initialNode.setPathValue(0);    // set initial node path value to zero
-        checkNeighboringNodes(initialNode);
-
 
         for (Cell node: unvisitedNodes) {
             if (!visitedNodes.contains(node))
-                checkNeighboringNodes(node);
+                calculateForVertices(node);
             if (exitNode.isVisited())
                 break;
         }
     }
 
-    private void checkNeighboringNodes(Cell currentNode) {
+
+    private void calculateForVertices(Cell currentNode) {
         Set<Cell> unvisitedNeighboringNodes = new HashSet<>();
 
         Cell nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
@@ -49,11 +48,10 @@ public class MazeSolver{
             nextNode.setVisited(true);
             nextNode = currentNode.checkNeighbors(this.mazeGrid, currentNode.getRow(), currentNode.getCol());
         }
-        //TODO: fix visited state and path cost
-        calculateDistance(currentNode, unvisitedNeighboringNodes);
+        checkDistance(currentNode, unvisitedNeighboringNodes);
     }
 
-    private void calculateDistance(Cell currentNode, Set<Cell> unvisitedNeighboringNodes) {
+    private void checkDistance(Cell currentNode, Set<Cell> unvisitedNeighboringNodes) {
         for (Cell node: unvisitedNeighboringNodes){
             node.setVisited(false);
             int currentNodePathCost = currentNode.getPathValue() + node.getPathValue();
