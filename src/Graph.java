@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 // DONE: implement Breadth-First Search algorithm to find relationships with known Vertices
-// TODO: Find relationships with Verticies
+// DONE: Find relationships with Verticies
 // TODO: Find path costs
 
 public class Graph {
@@ -15,16 +15,21 @@ public class Graph {
 
     private void bfs(Cell startingNode) throws InterruptedException {
         Queue<Cell> queue = new LinkedList<>();
-//        Stack<Cell> queueStack = new Stack<>();
-        int pathCost = 0;
         Set<Cell> visitedNodes = new HashSet<>();
         Set<Cell> vertices = findAllVertices();
+        int pathCost = 0;
+        Stack<Cell> neighboringPaths;
+        Deque<Cell> savedPaths = new ArrayDeque<>();
 
-        clearVisitedMarkers();
+        neighboringPaths = getPathNeighbors(startingNode);
+        for (int i = 0; i < neighboringPaths.size(); i++) {
+            Cell savedCell = neighboringPaths.pop();
+            savedCell.setVisitedVertex(true);
+            savedPaths.push(savedCell);
+        }
+
+
         queue.add(startingNode);
-//
-//        if (queue.isEmpty())
-//            queueStack.pop();
 
         while (!queue.isEmpty()){
             Cell currentNode = queue.poll();
@@ -34,8 +39,8 @@ public class Graph {
                 currentNode.setOnPath(true);
 
 //                TimeUnit.MILLISECONDS.sleep(750);
-                maze.display();
-                System.out.println();
+//                maze.display();
+//                System.out.println();
 
                 if (vertices.contains(currentNode) && startingNode != currentNode){
                     startingNode.getNeighboringNodes().put(currentNode, pathCost);
@@ -44,19 +49,20 @@ public class Graph {
                 }
             }
             pathCost++;
-            Set<Cell> neighbors = getPathNeighbors(currentNode);
+
+            Stack<Cell> neighbors = getPathNeighbors(currentNode);
             for (Cell adjacent : neighbors) {
-                if (!visitedNodes.contains(adjacent)) {
+                if (!visitedNodes.contains(adjacent) && !adjacent.isVisitedVertex()) {
                     if (vertices.contains(adjacent))
                         adjacent.setVisitedVertex(true);
-//
-//                    if (neighbors.size() > 1) {
-//                        queueStack.push(adjacent);
-//                        neighbors.remove(adjacent);
-//                        continue;
-//                    }
+
                     queue.add(adjacent);
                 }
+            }
+            if (queue.isEmpty() && !savedPaths.isEmpty()){
+                Cell nextPathCell = savedPaths.pop();
+                nextPathCell.setVisitedVertex(false);
+                queue.add(nextPathCell);
             }
         }
     }
@@ -98,8 +104,8 @@ public class Graph {
         }
     }
 
-    private Set<Cell> getPathNeighbors(Cell currentNode) {
-        Set<Cell> adjacentCells = new HashSet<>();
+    private Stack<Cell> getPathNeighbors(Cell currentNode) {
+        Stack<Cell> adjacentCells = new Stack<>();
         if (currentNode.isVisitedVertex())
             return adjacentCells;
 
@@ -119,22 +125,22 @@ public class Graph {
             // 1) current node below
             if (currentNode.getCol() > cell.getCol() &&
                     (!currentNode.getWalls()[Cell.Wall.TOP.getWall()] && !cell.getWalls()[Cell.Wall.BOTTOM.getWall()])) {
-                adjacentCells.add(cell);
+                adjacentCells.push(cell);
             }
             // 2) current node above
             if (currentNode.getCol() < cell.getCol() &&
                     (!currentNode.getWalls()[Cell.Wall.BOTTOM.getWall()] && !cell.getWalls()[Cell.Wall.TOP.getWall()])) {
-                adjacentCells.add(cell);
+                adjacentCells.push(cell);
             }
             // 3) current node on right side
             if (currentNode.getRow() > cell.getRow() &&
                     (!currentNode.getWalls()[Cell.Wall.LEFT.getWall()] && !cell.getWalls()[Cell.Wall.RIGHT.getWall()])) {
-                adjacentCells.add(cell);
+                adjacentCells.push(cell);
             }
             // 3) current node on left side
             if (currentNode.getRow() < cell.getRow() &&
                     (!currentNode.getWalls()[Cell.Wall.RIGHT.getWall()] && !cell.getWalls()[Cell.Wall.LEFT.getWall()])) {
-                adjacentCells.add(cell);
+                adjacentCells.push(cell);
             }
         }
         return adjacentCells;
