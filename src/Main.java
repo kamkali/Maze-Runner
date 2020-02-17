@@ -1,10 +1,10 @@
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         Maze myMaze = new MazeGenerator(5);
         myMaze.display();
 
-        MazeSolver mazeSolver = new MazeSolver(myMaze.getMazeGrid());
+        MazeSolver mazeSolver = new MazeSolver(myMaze);
         mazeSolver.solveMaze();
         Graph graph = new Graph(myMaze);
 

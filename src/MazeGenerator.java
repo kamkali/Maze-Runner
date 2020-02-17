@@ -9,13 +9,13 @@ public class MazeGenerator implements Maze {
     private Deque<Cell> cellStack = new ArrayDeque<>();
 
 
-    public MazeGenerator(int dim) throws InterruptedException {
+    public MazeGenerator(int dim) {
         this.cols = dim;
         this.rows = dim;
         this.generate();
     }
 
-    private void generate() throws InterruptedException {
+    private void generate() {
         mazeGrid = new Cell[cols][rows];
 
         for (int i = 0; i < mazeGrid.length; i++) {
@@ -32,13 +32,12 @@ public class MazeGenerator implements Maze {
         // open an entry wall
         currentCell.getWalls()[Cell.Wall.TOP.getWall()] = false;
         currentCell.setVisited(true);
-        currentCell.setPathValue(0);
 
         findCell(currentCell);
     }
 
 
-    private Cell findCell(Cell currentCell) throws InterruptedException {
+    private Cell findCell(Cell currentCell) {
         Cell nextCell = currentCell.checkNeighbors(mazeGrid, currentCell.getRow(), currentCell.getCol());
 
         if (nextCell != null){
@@ -46,7 +45,7 @@ public class MazeGenerator implements Maze {
             cellStack.push(currentCell);
 
             removeWalls(currentCell, nextCell);
-            
+
             currentCell = nextCell;
             return findCell(currentCell);
 

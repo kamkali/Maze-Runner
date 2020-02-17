@@ -10,7 +10,7 @@ public class Graph {
         this.maze = maze;
     }
 
-    private void bfs(Cell startingNode) throws InterruptedException {
+    private void bfs(Cell startingNode){
         Queue<Cell> queue = new LinkedList<>();
         Set<Cell> visitedNodes = new HashSet<>();
         Set<Cell> vertices = findAllVertices();
@@ -34,10 +34,6 @@ public class Graph {
             if (!visitedNodes.contains(currentNode)){
                 visitedNodes.add(currentNode);
                 currentNode.setOnPath(true);
-
-//                TimeUnit.MILLISECONDS.sleep(750);
-//                maze.display();
-//                System.out.println();
 
                 if (vertices.contains(currentNode) && startingNode != currentNode){
                     startingNode.getNeighboringNodes().put(currentNode, pathCost);
@@ -63,7 +59,7 @@ public class Graph {
     }
 
 
-    public void findVerticesRelation() throws InterruptedException {
+    public void findVerticesRelation(){
         Set<Cell> vertices = findAllVertices();
 
         for (Cell vertex: vertices){

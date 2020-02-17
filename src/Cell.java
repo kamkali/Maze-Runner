@@ -7,7 +7,8 @@ public class Cell {
     private boolean[] walls;
     private boolean visited;
     private boolean visitedVertex;
-    private int pathValue;
+    // previous cell with shortest distance
+    private Map<Cell, Integer> pathMap;
     private boolean onPath;
     private boolean savedNode;
     private Map<Cell, Integer> neighboringNodes = new HashMap<>();
@@ -44,13 +45,10 @@ public class Cell {
         return walls;
     }
 
-    public int getPathValue() {
-        return pathValue;
+    public Map<Cell, Integer> getPathMap() {
+        return pathMap;
     }
 
-    public void setPathValue(int pathValue) {
-        this.pathValue = pathValue;
-    }
 
     public Cell(int row, int col) {
         this.row = row;
