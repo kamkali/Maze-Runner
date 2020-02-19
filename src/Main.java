@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
 
-        Maze myMaze = new MazeGenerator(4);
+        Maze myMaze = new MazeGenerator(5);
         myMaze.display();
 
         MazeSolver mazeSolver = new MazeSolver(myMaze);

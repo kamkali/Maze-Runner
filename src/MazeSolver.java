@@ -45,15 +45,13 @@ public class MazeSolver{
         calculateForVertices(currentNode);
 
 
-        Cell lowestEntry = findLowestEntry(dijkstraTable);
-        System.out.println(lowestEntry);
-//
-//        for (Cell vertex : unvisitedNodes) {
-//            if (visitedNodes.contains(exitNode))
-//                break;
-//            else if (!visitedNodes.contains(vertex))
-//                calculateForVertices(vertex);
-//        }
+        while(!visitedNodes.contains(exitNode)){
+            Cell lowestEntry = findLowestEntry(dijkstraTable);
+            if (lowestEntry != null)
+                calculateForVertices(lowestEntry);
+        }
+
+        System.out.println(dijkstraTable);
     }
 
     private Cell findLowestEntry(Map<Cell, Map<Cell, Integer>> table){
