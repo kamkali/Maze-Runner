@@ -12,6 +12,11 @@ public class Cell {
     private boolean onPath;
     private boolean savedNode;
     private Map<Cell, Integer> neighboringNodes = new HashMap<>();
+    private Map<Cell,List<Cell>> nodesOnPath = new HashMap<>();
+
+    public Map<Cell, List<Cell>> getNodesOnPath() {
+        return nodesOnPath;
+    }
 
     public boolean isSavedNode() {
         return savedNode;

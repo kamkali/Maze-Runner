@@ -54,6 +54,15 @@ public class MazeSolver{
         displayShortestPath(dijkstraTable);
     }
 
+    private void markPath(List<Cell> pathList) {
+        for (int i = 0; i < pathList.size() - 1; i++) {
+            List<Cell> pathCells = pathList.get(i).getNodesOnPath().get(pathList.get(i + 1));
+            for (Cell cell : pathCells){
+                cell.setOnPath(true);
+            }
+        }
+    }
+
     private void displayShortestPath(Map<Cell, Map<Cell, Integer>> dijkstraTable) {
         List<Cell> pathList = new ArrayList<>();
         System.out.println("The shortest path is: ");
@@ -70,6 +79,7 @@ public class MazeSolver{
             System.out.print(" --> " + pathList.get(i));
         }
         System.out.println();
+        markPath(pathList);
     }
 
     private Cell findLowestEntry(Map<Cell, Map<Cell, Integer>> table){
@@ -117,15 +127,4 @@ public class MazeSolver{
         visitedNodes.add(currentNode);
         unvisitedNodes.remove(currentNode);
     }
-//
-//    private void checkDistance(Cell currentNode, Set<Cell> unvisitedNeighboringNodes) {
-//        for (Cell node: unvisitedNeighboringNodes){
-//            node.setVisited(false);
-//            int currentNodePathCost = currentNode.getPathValue() + node.getPathValue();
-//            if (currentNodePathCost < currentNode.getPathValue())
-//                currentNode.setPathValue(currentNodePathCost);
-//        }
-//        currentNode.setVisited(true);
-//        visitedNodes.add(currentNode);
-//    }
 }

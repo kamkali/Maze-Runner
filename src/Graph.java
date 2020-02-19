@@ -14,9 +14,10 @@ public class Graph {
         Queue<Cell> queue = new LinkedList<>();
         Set<Cell> visitedNodes = new HashSet<>();
         Set<Cell> vertices = findAllVertices();
-        int pathCost = 0;
         Stack<Cell> neighboringPaths;
         Deque<Cell> savedPaths = new ArrayDeque<>();
+        List<Cell> pathList = new ArrayList<>();
+        int pathCost = 0;
 
         neighboringPaths = getPathNeighbors(startingNode);
         for (int i = 0; i < neighboringPaths.size(); i++) {
@@ -33,12 +34,14 @@ public class Graph {
 
             if (!visitedNodes.contains(currentNode)){
                 visitedNodes.add(currentNode);
-                currentNode.setOnPath(true);
+                pathList.add(currentNode);
 
                 if (vertices.contains(currentNode) && startingNode != currentNode){
                     startingNode.getNeighboringNodes().put(currentNode, pathCost);
                     nodesRelation.put(startingNode, startingNode.getNeighboringNodes());
                     pathCost = 0;
+                    startingNode.getNodesOnPath().put(currentNode, pathList);
+                    pathList = new ArrayList<>();
                     currentNode.setVisitedVertex(true);
                 }
             }
