@@ -8,7 +8,7 @@ public class Cell {
     private boolean visited;
     private boolean visitedVertex;
     // previous cell with shortest distance
-    private Map<Cell, Integer> pathMap;
+    private Map<Cell, Integer> pathMap = new HashMap<>();
     private boolean onPath;
     private boolean savedNode;
     private Map<Cell, Integer> neighboringNodes = new HashMap<>();
