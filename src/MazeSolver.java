@@ -9,6 +9,7 @@ public class MazeSolver{
     private Graph graph;
     private Set<Cell> unvisitedNodes;
     private Cell initialNode;
+    private Cell exitNode;
 
 
     public MazeSolver(Maze maze) {
@@ -16,6 +17,7 @@ public class MazeSolver{
         this.graph = new Graph(maze);
         this.initialNode = maze.getMazeGrid()[0][0];  // pick entry node
         this.unvisitedNodes = graph.findAllVertices();
+        this.exitNode = maze.getMazeGrid()[maze.getMazeGrid().length - 1][maze.getMazeGrid()[0].length - 1];  // pick exit node
     }
 
     /**
@@ -34,8 +36,6 @@ public class MazeSolver{
             dijkstraTable.put(node, node.getPathMap());
             }
 
-
-        Cell exitNode = maze.getMazeGrid()[maze.getMazeGrid().length - 1][maze.getMazeGrid()[0].length - 1];  // pick exit node
         initialNode.getPathMap().replace(initialNode, 0);    // set initial node path value to zero
         dijkstraTable.replace(initialNode, initialNode.getPathMap());
         Cell currentNode = initialNode;
@@ -51,7 +51,25 @@ public class MazeSolver{
                 calculateForVertices(lowestEntry);
         }
 
-        System.out.println(dijkstraTable);
+        displayShortestPath(dijkstraTable);
+    }
+
+    private void displayShortestPath(Map<Cell, Map<Cell, Integer>> dijkstraTable) {
+        List<Cell> pathList = new ArrayList<>();
+        System.out.println("The shortest path is: ");
+        Cell currentNode = exitNode;
+        pathList.add(currentNode);
+        while(currentNode != initialNode){
+            Cell nextNode = dijkstraTable.get(currentNode).entrySet().iterator().next().getKey();
+            pathList.add(nextNode);
+            currentNode = nextNode;
+        }
+        Collections.reverse(pathList);
+        System.out.print(pathList.get(0));
+        for (int i = 1; i < pathList.size(); i++){
+            System.out.print(" --> " + pathList.get(i));
+        }
+        System.out.println();
     }
 
     private Cell findLowestEntry(Map<Cell, Map<Cell, Integer>> table){
