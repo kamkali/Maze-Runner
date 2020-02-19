@@ -15,11 +15,16 @@ The project consists of a couple of components:
 3. **Dijkstra's Shortest Path First algorithm** to solve a graph and find a path from entry to exit
 
 ## Usage
-When run, the user can generate a random maze. The app will ask for a dimension of a maze. The valid dimension range is <2,65>.
-<img width="438" alt="Zrzut ekranu 2020-02-19 o 20 40 21" src="https://user-images.githubusercontent.com/50112357/74869398-2cad3e00-5358-11ea-82a1-bbf46b02bd11.png">
+When run, the user can generate a random maze. The app will ask for a dimension. The valid dimension range is <2,65>.
+
+
+
+> <img width="438" alt="Zrzut ekranu 2020-02-19 o 20 40 21" src="https://user-images.githubusercontent.com/50112357/74869398-2cad3e00-5358-11ea-82a1-bbf46b02bd11.png">
+
+
 
 The generated maze can be solved using the next option. The path will be marked on the maze and the shortest path from entry to exit through graph vertices will be displayed.
-<img width="1064" alt="Zrzut ekranu 2020-02-19 o 20 40 30" src="https://user-images.githubusercontent.com/50112357/74870085-6599e280-5359-11ea-9e05-2ffaebb31547.png">
+> <img width="1064" alt="Zrzut ekranu 2020-02-19 o 20 40 30" src="https://user-images.githubusercontent.com/50112357/74870085-6599e280-5359-11ea-9e05-2ffaebb31547.png">
 
 ## Author
 
