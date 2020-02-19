@@ -12,7 +12,7 @@ public class MazeSolver{
     private Cell exitNode;
 
 
-    public MazeSolver(Maze maze) {
+    MazeSolver(Maze maze) {
         this.maze = maze;
         this.graph = new Graph(maze);
         this.initialNode = maze.getMazeGrid()[0][0];  // pick entry node
@@ -24,7 +24,7 @@ public class MazeSolver{
      * Maze Solver using Djikstra algorithm
      * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Algorithm
      */
-    public void solveMaze() {
+    void solveMaze() {
         // step 1
         Cell.clearPathMarkers(maze);
         Cell.clearVisitedMarkers(maze);
@@ -50,8 +50,21 @@ public class MazeSolver{
             if (lowestEntry != null)
                 calculateForVertices(lowestEntry);
         }
+        markPath(getPathList());
+    }
 
-        displayShortestPath(dijkstraTable);
+    private List<Cell> getPathList(){
+        List<Cell> pathList = new ArrayList<>();
+        System.out.println("The shortest path is: ");
+        Cell currentNode = exitNode;
+        pathList.add(currentNode);
+        while(currentNode != initialNode){
+            Cell nextNode = dijkstraTable.get(currentNode).entrySet().iterator().next().getKey();
+            pathList.add(nextNode);
+            currentNode = nextNode;
+        }
+        Collections.reverse(pathList);
+        return pathList;
     }
 
     private void markPath(List<Cell> pathList) {
@@ -63,17 +76,9 @@ public class MazeSolver{
         }
     }
 
-    private void displayShortestPath(Map<Cell, Map<Cell, Integer>> dijkstraTable) {
-        List<Cell> pathList = new ArrayList<>();
-        System.out.println("The shortest path is: ");
-        Cell currentNode = exitNode;
-        pathList.add(currentNode);
-        while(currentNode != initialNode){
-            Cell nextNode = dijkstraTable.get(currentNode).entrySet().iterator().next().getKey();
-            pathList.add(nextNode);
-            currentNode = nextNode;
-        }
-        Collections.reverse(pathList);
+    void displayShortestPath() {
+        List<Cell> pathList = getPathList();
+        markPath(pathList);
         System.out.print(pathList.get(0));
         for (int i = 1; i < pathList.size(); i++){
             System.out.print(" --> " + pathList.get(i));
@@ -126,5 +131,9 @@ public class MazeSolver{
         }
         visitedNodes.add(currentNode);
         unvisitedNodes.remove(currentNode);
+    }
+
+    public Map<Cell, Map<Cell, Integer>> getDijkstraTable() {
+        return dijkstraTable;
     }
 }
