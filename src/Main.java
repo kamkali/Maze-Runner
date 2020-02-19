@@ -1,3 +1,6 @@
+import exception.MazeNotGeneratedException;
+import exception.TooLargeDimensionException;
+
 import java.util.Scanner;
 
 public class Main {
